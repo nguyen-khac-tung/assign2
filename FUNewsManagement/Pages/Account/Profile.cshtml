@@ -1,0 +1,44 @@
+﻿@page
+@model FUNewsManagement.Pages.Account.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h2>Profile Information</h2>
+
+<hr />
+<div style="margin-top: 20px">
+    <table>
+        <tr>
+            <th class="col-sm-4">Account ID :</th>
+            <td>@Model.Account.AccountId</td>
+        </tr>
+        <tr>
+            <th class="col-sm-4">Account Name :</th>
+            <td>@Model.Account.AccountName</td>
+        </tr>
+        <tr>
+            <th class="col-sm-4">Account Email :</th>
+            <td>@Model.Account.AccountEmail</td>
+        </tr>
+        <tr>
+            <th class="col-sm-4">Role :</th>
+            <td>@Model.Account.RoleName</td>
+        </tr>
+    </table>
+</div>
+<div style="margin-top: 50px">
+    <a asp-page="/Account/EditProfile" asp-route-id="@Model.Account.AccountId">Edit</a> |
+    @if (Model.Account.RoleName == "Admin")
+    {
+        <a asp-page="/Account/List">Back to List</a>
+    }
+    else if (Model.Account.RoleName == "Staff")
+    {
+        <a asp-page="/News/List">Back to List</a>
+    }
+    else
+    {
+        <a asp-page="/Home/Index">Back to List</a>
+    }
+</div>

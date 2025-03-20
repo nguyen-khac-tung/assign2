@@ -1,0 +1,67 @@
+﻿@page
+@model FUNewsManagement.Pages.Account.CreateModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<h1>Create Account</h1>
+
+<hr />
+
+<div class="my-5">
+    <form method="post">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="row">
+                    <label asp-for="Account.AccountName" class="col-form-label">Account Name</label>
+                    <input asp-for="Account.AccountName" class="form-control" />
+                    <span asp-validation-for="Account.AccountName" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <label asp-for="Account.AccountEmail" class="col-form-label">Account Email</label>
+                    <input asp-for="Account.AccountEmail" class="form-control" />
+                    <span asp-validation-for="Account.AccountEmail" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <label asp-for="Account.AccountPassword" class="col-form-label">Account Password</label>
+                    <input asp-for="Account.AccountPassword" class="form-control" />
+                    <span asp-validation-for="Account.AccountPassword" class="text-danger"></span>
+                </div>
+                <div class="row py-3">
+                    <div class="col-md-6 d-flex align-items-center ps-0">
+                        <label asp-for="Account.AccountRole" class="col-form-label me-5">Account Role</label>
+                        <select asp-for="Account.AccountRole" class="form-select w-50">
+                            <option value="1" selected="@(Model.Account?.AccountRole == 1)">Staff</option>
+                            <option value="2" selected="@(Model.Account?.AccountRole == 2)">Lecture</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row justify-content-between mt-4">
+                    <div class="col-md-5 ps-0">
+                        @if (ViewData["Message"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show rounded-0 py-2">
+                                <span>@ViewData["Message"]</span>
+                                <button type="button" class="btn-close pt-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                        @if (ViewData["Success"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show rounded-0 py-2">
+                                <span>@ViewData["Success"]</span>
+                                <button type="button" class="btn-close pt-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-2 col-sm-12">
+                        <button type="submit" class="btn btn-primary py-2 w-100">Save Change</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-page="/Account/List">Back to List</a>
+</div>

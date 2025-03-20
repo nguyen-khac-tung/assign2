@@ -1,0 +1,68 @@
+﻿@page
+@model FUNewsManagement.Pages.News.ListModel
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>Article List</h1>
+
+<div class="row mb-3 justify-content-between">
+    <div class="col-sm-6">
+        <a asp-page="/News/History" class="btn btn-primary">History</a>
+        <a asp-page="/Category/List" class="btn btn-primary">Category</a>
+    </div>
+    <div class="col-sm-2">
+        <a asp-page="/News/Create" class="btn btn-primary">Create New</a>
+    </div>
+</div>
+
+@if (Model.NewsList != null && Model.NewsList.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>News Title</th>
+                <th>Headline</th>
+                <th>Created Date</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.NewsList)
+            {
+                <tr>
+                    <td class="text-truncate" style="max-width: 200px;">@item.NewsTitle</td>
+                    <td class="text-truncate" style="max-width: 200px;">@item.Headline</td>
+                    <td>@item.CreatedDate?.ToString("dd/MM/yyyy")</td>
+                    <td>@item.Category.CategoryName</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <a asp-page="/News/Details" asp-route-id="@item.NewsArticleId" class="btn btn-outline-primary">View</a> |
+                        <a asp-page="/News/Edit" asp-route-id="@item.NewsArticleId" class="btn btn-outline-success">Edit</a> |
+                        <a href="javascript:void(0);" onclick="DeleteConfirm('@item.NewsArticleId')" class="btn btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <form id="deleteForm" asp-page="/News/Delete" method="post">
+        <input type="hidden" name="id" id="deleteNewsId">
+    </form>
+}
+else
+{
+    <div class="row text-center my-5">
+        <h1 style="color: #bebebe">Empty List</h1>
+    </div>
+}
+<script>
+    function DeleteConfirm(newsArticleId) {
+        var isDelete = confirm("Are you sure you want to delete this news article?");
+        if (isDelete) {
+            document.getElementById('deleteNewsId').value = newsArticleId
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>

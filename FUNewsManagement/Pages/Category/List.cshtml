@@ -1,0 +1,75 @@
+﻿@page
+@model FUNewsManagement.Pages.Category.ListModel
+@{
+    ViewData["Title"] = "Category";
+    var message = TempData["Message"] as string;
+}
+
+<h1>Manage Category</h1>
+
+<div class="row mb-3">
+    <div class="text-end">
+        <a asp-page="/Category/Create" class="btn btn-primary">Create Category</a>
+    </div>
+</div>
+<hr />
+
+@if (Model.CategoryDetails != null && Model.CategoryDetails.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Category ID</th>
+                <th>Category Name</th>
+                <th>Category Description</th>
+                <th>Status</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CategoryDetails)
+            {
+                <tr>
+                    <td class="text-truncate" style="max-width: 200px;">@item.CategoryId</td>
+                    <td class="text-truncate" style="max-width: 200px;">@item.CategoryName</td>
+                    <td class="text-truncate" style="max-width: 400px;">@item.CategoryDesciption</td>
+                    <td>@item.Status</td>
+                    <td class="text-end">
+                        <a asp-page="/Category/Details" asp-route-id="@item.CategoryId" class="btn btn-outline-primary">View</a> |
+                        <a asp-page="/Category/Edit" asp-route-id="@item.CategoryId" class="btn btn-outline-success">Edit</a> |
+                        <a href="javascript:void(0);" onclick="DeleteConfirm('@item.CategoryId')" class="btn btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <form id="deleteForm" asp-page="/Category/Delete" method="post">
+        <input type="hidden" name="id" id="deleteCategoryId">
+    </form>
+}
+else
+{
+    <div class="row text-center my-5">
+        <h1 style="color: #bebebe">Empty List</h1>
+    </div>
+}
+
+
+@if (message != null)
+{
+    <script>
+        window.onload = function () {
+            alert("@message");
+        };
+    </script>
+}
+
+<script>
+    function DeleteConfirm(categoryId) {
+        var isDelete = confirm("Are you sure you want to delete this category?");
+        if (isDelete) {
+            document.getElementById('deleteCategoryId').value = categoryId;
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>

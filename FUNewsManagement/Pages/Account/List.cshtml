@@ -1,0 +1,70 @@
+﻿@page
+@model FUNewsManagement.Pages.Account.ListModel
+@{
+    ViewData["Title"] = "Manage Accounts";
+}
+
+<h1>Manage Account</h1>
+
+<div class="row mb-3 justify-content-between">
+    <div class="col-sm-6">
+        <a asp-page="/News/Statistic" class="btn btn-primary">Satistic</a>
+    </div>
+    <div class="col-sm-2">
+        <a asp-page="/Account/Create" class="btn btn-primary">Create Account</a>
+    </div>
+</div>
+
+<hr />
+
+@if (Model.Accounts != null && Model.Accounts.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Account ID</th>
+                <th>Account Name</th>
+                <th>Account Email</th>
+                <th>Account Role</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Accounts)
+            {
+                <tr>
+                    <td class="text-truncate" style="max-width: 200px;">@item.AccountId</td>
+                    <td class="text-truncate" style="max-width: 200px;">@item.AccountName</td>
+                    <td class="text-truncate" style="max-width: 200px;">@item.AccountEmail</td>
+                    <td>@item.RoleName</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <a asp-page="/Account/Details" asp-route-id="@item.AccountId" class="btn btn-outline-primary">View</a> |
+                        <a asp-page="/Account/Edit" asp-route-id="@item.AccountId" class="btn btn-outline-success">Edit</a> |
+                        <a href="javascript:void(0);" onclick="DeleteConfirm('@item.AccountId')" class="btn btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <form id="deleteForm" asp-page="/Account/Delete" method="post">
+        <input type="hidden" name="id" id="deleteAccountId">
+    </form>
+}
+else
+{
+    <div class="row text-center my-5">
+        <h1 style="color: #bebebe">Empty List</h1>
+    </div>
+}
+
+<script>
+    function DeleteConfirm(accountId) {
+        var isDelete = confirm("Are you sure you want to delete this account?");
+        if (isDelete) {
+            document.getElementById('deleteAccountId').value = accountId;
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>

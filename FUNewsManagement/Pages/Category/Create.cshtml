@@ -1,0 +1,46 @@
+﻿@page
+@model FUNewsManagement.Pages.Category.CreateModel
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<h1>Create Category</h1>
+
+<hr />
+
+<div class="my-5">
+    <form method="post">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="row">
+                    <label asp-for="CategoryDetail.CategoryName" class="col-form-label">Category Name</label>
+                    <input asp-for="CategoryDetail.CategoryName" class="form-control" />
+                    <span asp-validation-for="CategoryDetail.CategoryName" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <label asp-for="CategoryDetail.CategoryDesciption" class="col-form-label">Category Desciption</label>
+                    <input asp-for="CategoryDetail.CategoryDesciption" class="form-control" />
+                    <span asp-validation-for="CategoryDetail.CategoryDesciption" class="text-danger"></span>
+                </div>
+                <div class="row justify-content-between mt-4">
+                    <div class="col-md-5 ps-0">
+                        @if (ViewData["Success"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show rounded-0 py-2">
+                                <span>@ViewData["Success"]</span>
+                                <button type="button" class="btn-close pt-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-2 col-sm-12">
+                        <button type="submit" class="btn btn-primary py-2 w-100">Save Change</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-page="/Category/List">Back to List</a>
+</div>

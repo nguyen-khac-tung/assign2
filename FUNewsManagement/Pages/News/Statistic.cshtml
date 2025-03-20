@@ -1,0 +1,74 @@
+﻿@page
+@model FUNewsManagement.Pages.News.StatisticModel
+@{
+    ViewData["Title"] = "Statistic";
+}
+
+<h1>Statistic</h1>
+
+<h4>News Article</h4>
+<hr />
+
+<div class="my-5">
+    <form method="post">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="row">
+                    <label class="col-form-label">Date from </label>
+                    <input type="date" name="from" class="form-control" required/>
+                </div>
+                <div class="row">
+                    <label class="col-form-label">Date to </label>
+                    <input type="date" name="to" class="form-control" required/>
+                </div>
+                <div class="row justify-content-between mt-4">
+                    <div class="col-md-5 ps-0">
+                        @if (ViewBag.Success != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show rounded-0 py-2">
+                                <span>@ViewBag.Success</span>
+                                <button type="button" class="btn-close pt-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-2 col-sm-12">
+                        <button type="submit" class="btn btn-primary py-2 w-100">Show Statistic</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@if(Model.Statistics != null)
+{
+    <div class="mb-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Account ID</th>
+                    <th>Account Name</th>
+                    <th>Account Email</th>
+                    <th>Status</th>
+                    <th>News Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Statistics)
+                {
+                    <tr>
+                        <td class="text-truncate" style="max-width: 200px;">@item.account.AccountId</td>
+                        <td class="text-truncate" style="max-width: 200px;">@item.account.AccountName</td>
+                        <td class="text-truncate" style="max-width: 200px;">@item.account.AccountEmail</td>
+                        <td>@item.account.Status</td>
+                        <td>@item.NewsAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div>
+    <a asp-page="/Account/List">Back to List</a>
+</div>

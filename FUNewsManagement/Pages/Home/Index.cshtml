@@ -1,0 +1,51 @@
+﻿@page 
+@model FUNewsManagement.Pages.Home.IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>News Article</h1>
+
+<div class="row mb-3 justify-content-end">
+    <div class="col-md-4">
+        <form asp-page="/News/Search" method="post" class="d-flex">
+            <input type="text" name="keyword" class="form-control me-2" placeholder="Search news..." required />
+            <button type="submit" class="btn btn-outline-warning">Search</button>
+        </form>
+    </div>
+</div>
+
+@if (Model.NewsList != null && Model.NewsList.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>News Title</th>
+                <th>Headline</th>
+                <th>Created Date</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.NewsList)
+            {
+                <tr>
+                    <td class="text-truncate" style="max-width: 200px;">@item.NewsTitle</td>
+                    <td class="text-truncate" style="max-width: 200px;">@item.Headline</td>
+                    <td>@item.CreatedDate?.ToString("dd/MM/yyyy")</td>
+                    <td>@item.Category.CategoryName</td>
+                    <td>
+                        <a asp-page="/News/Details" asp-route-id="@item.NewsArticleId" class="btn btn-outline-primary">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="row text-center my-5">
+        <h1 style="color: #bebebe">Empty List</h1>
+    </div>
+}
