@@ -41,6 +41,7 @@ namespace FUNewsManagement.Repository
             newComment.CreatedDate = DateTime.Now;
             newComment.NewsArticleId = comment.NewsArticleID;
             newComment.Account = comment.Account;
+            newComment.IsDelete = false;
 
             _context.Comments.Add(newComment);
             _context.SaveChanges();

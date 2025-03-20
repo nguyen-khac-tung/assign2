@@ -1,3 +1,4 @@
+using FUNewsManagement.Hubs;
 using FUNewsManagement.Repository;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -34,6 +35,7 @@ namespace FUNewsManagement
 
             app.MapRazorPages();
             app.MapGet("/", () => Results.Redirect("/Home/Index"));
+            app.MapHub<CommentHub>("/commentHub");
 
             app.Run();
         }
@@ -58,6 +60,7 @@ namespace FUNewsManagement
             service.AddTransient<ICommentRepository, CommentRepository>();
 
             service.AddRazorPages();
+            service.AddSignalR();
         }
     }
 }
