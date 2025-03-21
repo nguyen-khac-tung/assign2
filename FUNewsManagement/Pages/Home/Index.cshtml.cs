@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Repository.News;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using ViewModels;
 using Microsoft.IdentityModel.Tokens;
+using FUNewsManagement.Repository;
 
 namespace FUNewsManagement.Pages.Home
 {

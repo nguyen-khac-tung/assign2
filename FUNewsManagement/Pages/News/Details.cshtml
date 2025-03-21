@@ -55,33 +55,32 @@
 <div style="margin-top: 50px; margin-bottom: 20px">
     <h4>Comment</h4>
     <hr />
-    <form asp-page="/Comment/Create" method="post">
-        <div class="row justify-content-center align-content-center w-100 m-auto">
-            <div class="col-md-12 col-sm-10">
-                <input type="hidden" name="NewsArticleId" value="@Model.DetailVM.NewsArticleId" />
-                <div class="row mb-2">
-                    <textarea name="Content" class="form-control" rows="4"></textarea>
-                </div>
-                <div class="row justify-content-end">
-                    <div class="col-md-2 text-end px-0">
-                        <button type="submit" class="btn btn-primary">Save Comment</button>
-                    </div>
+    <div class="row justify-content-center align-content-center w-100 m-auto">
+        <div class="col-md-12 col-sm-10">
+            <input type="hidden" id="newsArticleId" value="@Model.DetailVM.NewsArticleId" />
+            <input type="hidden" id="currentAccountId" value="@ViewData["AccountID"]"/>
+            <div class="row mb-2">
+                <textarea id="commentContent" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-md-2 text-end px-0">
+                    <button id="saveCommentBtn" class="btn btn-primary">Save Comment</button>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 
-@if (listComment != null && listComment.Any())
-{
-    <div class="row justify-content-center align-content-center">
-        <div class="col-md-12 col-sm-10">
+<div class="row justify-content-center align-content-center">
+    <div id="commentsList" class="col-md-12 col-sm-10">
+        @if (listComment != null && listComment.Any())
+        {
             @foreach (var comment in listComment)
             {
                 <form asp-page="/Comment/Edit" method="post">
                     <div class="row justify-content-between my-2">
                         <div class="col-md-2">
-                            <strong>@comment.Account.AccountName :</strong>
+                            <strong>@comment.AccountName :</strong>
                         </div>
                         <div class="col-md-8">
                             <input type="text" value="@comment.Content" class="form-control" disabled />
@@ -93,10 +92,9 @@
                     </div>
                 </form>
             }
-        </div>
+        }
     </div>
-}
-
+</div>
 <div style="margin-top: 20px">
     @if (ViewBag.Role == "Staff")
     {
@@ -108,3 +106,72 @@
         <a asp-page="/Home/Index">Back to List</a>
     }
 </div>
+
+@section Scripts {
+    <script src="~/js/microsoft/signalr/signalr.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/commentHub").build();
+
+        connection.start().catch(function (err) {
+            console.error(err.toString());
+        });
+
+        connection.on("ReceiveComment", function (comment) {
+            if (comment.newsArticleID === $("#newsArticleId").val()) {
+                const commentHtml = createCommentElement(comment);
+                $("#commentsList").append(commentHtml);
+            }
+        });
+
+        $("#saveCommentBtn").on("click", function (e) {
+            var content = $("#commentContent").val();
+            if (content == null || content.trim() === '') {
+                alert("Please enter a comment");
+                return false;
+            }
+
+            var content = $("#commentContent").val();
+            var newsArticleId = $("#newsArticleId").val();
+            var accountId = $("#currentAccountId").val();
+
+            $.ajax({
+                url: "/Comment/Create",
+                type: "post",
+                data: {
+                    commentVM: {
+                        Content: content,
+                        NewsArticleID: newsArticleId,
+                        AccountID: parseInt(accountId)
+                    }
+                },
+                success: function () {
+                    $("#commentContent").val("");
+                },
+                error: function (err) {
+                    console.error("Error creating comment:", err);
+                    alert("Error creating comment");
+                }
+            });
+
+        })
+
+        function createCommentElement(comment) {
+            var commentHtml = `
+                                <form asp-page="/Comment/Edit" method="post">
+                                    <div class="row justify-content-between my-2">
+                                        <div class="col-md-2">
+                                            <strong>${comment.accountName} :</strong>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" value="${comment.content}" class="form-control" disabled />
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <button type="submit" class="btn btn-success">Edit</button>
+                                            <a asp-page="/Comment/Delete" asp-route-commentId="${comment.commentID}" class="btn btn-danger">Delete</a>
+                                        </div>
+                                    </div>
+                                </form>`;
+            return commentHtml;
+        }
+    </script>
+}

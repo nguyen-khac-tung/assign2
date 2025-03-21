@@ -28,7 +28,8 @@ namespace FUNewsManagement.Repository
                                    Content = c.Content,
                                    CreatedDate = c.CreatedDate,
                                    NewsArticleID = c.NewsArticleId,
-                                   Account = a
+                                   AccountID = a.AccountId,
+                                   AccountName = a.AccountName
                                }).ToList();
             return listComment;
         }
@@ -40,7 +41,7 @@ namespace FUNewsManagement.Repository
             newComment.Content = comment.Content;
             newComment.CreatedDate = DateTime.Now;
             newComment.NewsArticleId = comment.NewsArticleID;
-            newComment.Account = comment.Account;
+            newComment.AccountId = comment.AccountID;
             newComment.IsDelete = false;
 
             _context.Comments.Add(newComment);

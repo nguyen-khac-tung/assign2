@@ -9,11 +9,13 @@ namespace FUNewsManagement.Pages.News
     {
         private readonly INewsRepository _newsRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public DetailsModel(INewsRepository newsRepository, ICommentRepository commentRepository)
+        public DetailsModel(INewsRepository newsRepository, ICommentRepository commentRepository, IAccountRepository accountRepository)
         {
             _newsRepository = newsRepository;
             _commentRepository = commentRepository;
+            _accountRepository = accountRepository;
         }
 
         [BindProperty]
@@ -21,9 +23,12 @@ namespace FUNewsManagement.Pages.News
 
         public IActionResult OnGet(string id)
         {
+            var email = HttpContext.Session.GetString("UserEmail");
+            var account = _accountRepository.GetAccountByEmail(email);
+            ViewData["AccountId"] = account.AccountId;
             ViewData["Role"] = HttpContext.Session.GetString("UserRole");
-            DetailVM = _newsRepository.GetNewsDetail(id);
             ViewData["ListComment"] = _commentRepository.GetCommentOfNews(id);
+            DetailVM = _newsRepository.GetNewsDetail(id);
             return Page();
         }
     }

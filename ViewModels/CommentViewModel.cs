@@ -9,10 +9,11 @@ namespace ViewModels
 {
     public class CommentVM
     {
-        public string CommentID { get; set; }
-        public string Content { get; set; }
+        public string? CommentID { get; set; }
+        public string? Content { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string? NewsArticleID { get; set; }
-        public SystemAccount? Account { get; set; }
+        public int? AccountID { get; set; }
+        public string? AccountName { get; set; }
     }
 }
