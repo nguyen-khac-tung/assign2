@@ -8,6 +8,7 @@ using ViewModels;
 
 namespace FUNewsManagement.Pages.Comment
 {
+    [IgnoreAntiforgeryToken]
     public class CreateModel : PageModel
     {
         private readonly ICommentRepository _commentRepository;
@@ -26,8 +27,7 @@ namespace FUNewsManagement.Pages.Comment
             commentVM.CommentID = Guid.NewGuid().ToString();
             _commentRepository.CreateComment(commentVM);
             _hubContext.Clients.All.SendAsync("ReceiveComment", commentVM);
-
-            return StatusCode(200, new {success = true});
+            return StatusCode(200, new { success = true });
         }
     }
 }

@@ -25,7 +25,8 @@ namespace FUNewsManagement.Pages.News
         {
             var email = HttpContext.Session.GetString("UserEmail");
             var account = _accountRepository.GetAccountByEmail(email);
-            ViewData["AccountId"] = account.AccountId;
+            ViewData["AccountId"] = account?.AccountId;
+            ViewData["AccountName"] = account?.AccountName;
             ViewData["Role"] = HttpContext.Session.GetString("UserRole");
             ViewData["ListComment"] = _commentRepository.GetCommentOfNews(id);
             DetailVM = _newsRepository.GetNewsDetail(id);

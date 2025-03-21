@@ -39,7 +39,7 @@ namespace FUNewsManagement.Repository
             Comment newComment = new Comment();
             newComment.CommentId = comment.CommentID;
             newComment.Content = comment.Content;
-            newComment.CreatedDate = DateTime.Now;
+            newComment.CreatedDate = comment.CreatedDate;
             newComment.NewsArticleId = comment.NewsArticleID;
             newComment.AccountId = comment.AccountID;
             newComment.IsDelete = false;
